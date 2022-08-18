@@ -7,9 +7,7 @@ import {
 } from "../../../config/constants";
 
 const initialState = {
-  isLoggedIn: localStorage.getItem(IS_LOGGGED_IN)
-    ? localStorage.getItem(IS_LOGGGED_IN)
-    : false,
+  isLoggedIn: false,
   error: "",
 };
 
