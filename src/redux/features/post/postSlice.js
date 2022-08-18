@@ -4,7 +4,7 @@ import {
   deletePostRequest,
   fetchAllPostsRequest,
   updatePostRequest,
-} from "../../../api/posts";
+} from "../../../api/posts.api";
 
 const initialState = {
   posts: [],
