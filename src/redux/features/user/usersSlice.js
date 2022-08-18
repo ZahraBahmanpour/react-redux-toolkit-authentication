@@ -1,5 +1,5 @@
 import { createAsyncThunk, createSlice } from "@reduxjs/toolkit";
-import { loginRequest } from "../../../api/users.api";
+import { loginRequest, refreshTokenRequest } from "../../../api/users.api";
 import {
   ACCESS_TOKEN,
   IS_LOGGGED_IN,
@@ -24,6 +24,17 @@ export const login = createAsyncThunk("users/login", (user) => {
     });
 });
 
+export const refreshToken = createAsyncThunk("users/refreshToken", (user) => {
+  return refreshTokenRequest()
+    .then((response) => {
+      localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+      return response;
+    })
+    .catch((error) => {
+      return Promise.reject(error);
+    });
+});
+
 export const usersSlice = createSlice({
   name: "users",
   initialState,
@@ -34,6 +45,16 @@ export const usersSlice = createSlice({
       return { isLoggedIn: true, error: "" };
     });
     builder.addCase(login.rejected, (state, action) => {
+      console.log("rejected", action);
+      return { isLoggedIn: false, error: action.error.message };
+    });
+
+    // refresh token
+    builder.addCase(refreshToken.fulfilled, (state, action) => {
+      console.log("fulfilled", action);
+      return { isLoggedIn: true, error: "" };
+    });
+    builder.addCase(refreshToken.rejected, (state, action) => {
       console.log("rejected", action);
       return { isLoggedIn: false, error: action.error.message };
     });
